@@ -13,32 +13,31 @@
 	//console.log(width, height, chartData,Var,Bins,color,label)
 	buildChart(width, height, chartData,Var,Bins,color,label)
 
-	function buildChart(width, height, data,Var, colorData, label){
+	function buildChart(width, height, data,Var, Bins,colorData, label){
 		
 		const margin = {left:70,right:20,top:20,bottom:50}
 		const visWidth = width - margin.left - margin.right
 		const visHeight = height - margin.top - margin.bottom
 
 		//Histobins is the function that splits the data into each bin
-		const histoBins = d3.bin().thresholds(Bins)
-
-		const maxBins = d3.max(histoBins, d => d.length)
-
-		const histoData = histoBins(data.map(d => d[Var]))
 		
+		const histoBins = d3.bin().thresholds(Bins)
+		const histoData = histoBins(data.map(d => d[Var]))
+		const maxBins = d3.max(histoData, d => d.length)
+
 		const yScale = d3.scaleLinear()
 			.domain([0,maxBins])
 			.range([visHeight,margin.top])
 
 		const xScale = d3.scaleLinear()
-			.domain([0,10])
-			.range([visHeight,margin.top])
+			.domain(d3.extent(data, d => d[Var]))
+			.range([30,width-margin.left])
 
 		const freq = d3.scaleLinear()
 			.domain([0, maxBins/ data.length])
 			.nice()
 			.range([height - margin.bottom, margin.top])		
-			console.log('entering histo')
+			//console.log(histoData)
 		onMount(() => {
 
 			const docLocation = d3.select(div)
@@ -51,7 +50,7 @@
 				.attr('transform',`translate(${margin.left},${margin.top})`)
 
 			const title = canvas.append('g')
-				.attr('transform',`translate(${width/4},${margin.top + 20})`)
+				.attr('transform',`translate(${width/4},${margin.top})`)
 				.append('text')
 				.text(label)
 				.attr('font-size','15')
@@ -67,10 +66,12 @@
 				.attr("dy", ".05em")
 				.attr("transform", "rotate(-25)")
 
+			const format = d3.format(".1%");
+	
 			const dataBuckets = chart.selectAll('g')
 				.data(histoData)
 				.join('g');
-
+			
 			const bars = dataBuckets
 				.append('rect')
 				.attr('fill',colorData)
@@ -78,6 +79,15 @@
 				.attr('x', d => xScale(d.x0))
 				.attr('width', d => Math.max(0, xScale(d.x1) - xScale(d.x0)) - 2)
 				.attr('height',d => yScale(0) - yScale(d.length))
+	
+			const labels = dataBuckets
+				.append("text")
+				.attr("x", d => ((xScale(d.x0) + xScale(d.x1)) / 2) + 5 | 0)
+				.attr("y", d => yScale(d.length) - 2)
+				.attr("fill", "black")
+				.attr("font-size", 10)
+				.attr("text-anchor", "middle")
+				.text(d => format(d.length/ data.length)) 
 		})
 	}
 
