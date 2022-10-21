@@ -1,5 +1,6 @@
 <script>
     import ScatterChart from "$lib/ScatterChart.svelte";
+    import Histogram from "$lib/Histogram.svelte";
     export let data;
     console.log(data)
 </script>
@@ -13,10 +14,14 @@
         creators. Then there is veritable <a href="https://plotly.com/javascript/">Plotly.js</a> and <a href="http://www.gnuplot.info/">Gnu Plot</a>. There is Tableau and PowerBi softwares which transforms the Data to visualisation as seemless as possible.  
         </p>
 
-    <h3 class="black">Line Chart</h3>
-
+    <div class="flex fl">    
+    <h3 class="black">ScatterPlot Chart</h3>
     <ScatterChart width={400} height={300} chartData={data.chartData} xVar={data.xVar} yVar={data.yVar} color={data.color} label={data.title}/>
+    <h3 class="black">Histogram Chart</h3>
+    <Histogram width={400} height={300} chartData={data.chartData} Var={data.yVar} Bins={10} color={data.color} label={'Histogram of Cases'}/>
+    </div>
     
+
     <h3 class="black">Abstraction : A Choice</h3>
     <p class="lh-copy f3">
         The ease comes with abstraction of the chart creation process, that has been implemented on top some other language or library for example D3. If you want to have control then of the chart, there is very high learning curve, and learn D3. With Svelte there is an opportunity to reverse this dynamics. If you know D3 then there is no need to learn any other library. You can implement the chart in the style you want, and then create Svelte Components that are reusable. Like the component shown below. 

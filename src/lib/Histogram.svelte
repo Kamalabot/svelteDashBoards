@@ -1,6 +1,5 @@
 <script>
 // @ts-nocheck'
-    import parsers from "$lib/parsers"    
 	export let height;
     export let width;
 	import * as d3 from 'd3'
@@ -11,10 +10,11 @@
 	export let Bins;
     export let chartData; //get the historic data from page.js
 	let div;
-
+	//console.log(width, height, chartData,Var,Bins,color,label)
 	buildChart(width, height, chartData,Var,Bins,color,label)
 
 	function buildChart(width, height, data,Var, colorData, label){
+		
 		const margin = {left:70,right:20,top:20,bottom:50}
 		const visWidth = width - margin.left - margin.right
 		const visHeight = height - margin.top - margin.bottom
@@ -38,7 +38,7 @@
 			.domain([0, maxBins/ data.length])
 			.nice()
 			.range([height - margin.bottom, margin.top])		
-
+			console.log('entering histo')
 		onMount(() => {
 
 			const docLocation = d3.select(div)
@@ -73,14 +73,13 @@
 
 			const bars = dataBuckets
 				.append('rect')
-				.attr('fill',color)
+				.attr('fill',colorData)
 				.attr('y', d => yScale(d.length))
 				.attr('x', d => xScale(d.x0))
 				.attr('width', d => Math.max(0, xScale(d.x1) - xScale(d.x0)) - 2)
-				.attr('height',d => yScale(0))
+				.attr('height',d => yScale(0) - yScale(d.length))
 		})
 	}
-    //console.log(chartData,'Data Reached Line Chart')
 
 </script>
 
