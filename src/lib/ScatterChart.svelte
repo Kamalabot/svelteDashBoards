@@ -7,25 +7,26 @@
 	import { onMount } from 'svelte';
 	export let label;
 	export let color;
-	
+	export let xVar;
+	export let yVar;	
     export let chartData; //get the historic data from page.js
 	let div;
 
-	buildChart(width, height, chartData, color,label)
+	buildChart(width, height, chartData,xVar,yVar,color,label)
 
-	function buildChart(width, height, data, colorData, label){
+	function buildChart(width, height, data, xVar, yVar, colorData, label){
 		const margin = {left:70,right:20,top:20,bottom:50}
 		const visWidth = width - margin.left - margin.right
 		const visHeight = height - margin.top - margin.bottom
 
 		const xScale = d3.scaleTime()
-			.domain(d3.extent(data.map(d => d.x)))
+			.domain(d3.extent(data.map(d => d[xVar])))
 			.range([0,visWidth])
 
-		//console.log(data.map((d,i) => d.x))
+		//console.log(data.map((d,i) => d[xVar]))
 
 		const yScale = d3.scaleLinear()
-			.domain(d3.extent(data.map(d => d.y)))
+			.domain(d3.extent(data.map(d => d[yVar])))
 			.range([visHeight,margin.top])
 
 		onMount(() => {
@@ -71,8 +72,8 @@
 
 			const bars = bubbles
 				.append('circle')
-				.attr('cy', d => yScale(d.y))
-				.attr('cx', d => xScale(d.x))
+				.attr('cy', d => yScale(d[yVar]))
+				.attr('cx', d => xScale(d[xVar]))
 				.attr('r', 2)
 				.attr('fill',colorData)
 		})

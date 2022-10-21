@@ -13,6 +13,8 @@ export const load = async ({fetch})=>{
     return {
         chartData: fetchData(),
         color:'green',
-        title:'Covid Status in US'
+        title:'Covid Status in US',
+        xVar:'x',
+        yVar:'y'
     };
 }; 
