@@ -1,7 +1,7 @@
 <script>
     import ScatterChart from "$lib/ScatterChart.svelte";
     export let data;
-    // console.log(data)
+    console.log(data)
 </script>
 
 <h1 class="tc blue pa2">Welcome to the Repo</h1>
@@ -19,7 +19,7 @@
     
     <h3 class="black">Line Chart</h3>
 
-    <ScatterChart width={400} height={300} chartData={data.chartData}/>
+    <ScatterChart width={400} height={300} chartData={data.chartData} color={data.color} label={data.title}/>
 
     <h3>Standardisation : Stub</h3>
     <p class="lh-copy f3">

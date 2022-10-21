@@ -5,11 +5,13 @@
     export let width;
 	import * as d3 from 'd3'
 	import { onMount } from 'svelte';
+	export let label;
+	export let color;
 	
     export let chartData; //get the historic data from page.js
 	let div;
-	
-	buildChart(width, height, chartData[0].data, chartData[0].borderColor,chartData[0].label)
+
+	buildChart(width, height, chartData, color,label)
 
 	function buildChart(width, height, data, colorData, label){
 		const margin = {left:70,right:20,top:20,bottom:50}
@@ -40,7 +42,7 @@
 			const title = canvas.append('g')
 				.attr('transform',`translate(${width/4},${margin.top + 20})`)
 				.append('text')
-				.text(`Status of Covid ${label}`)
+				.text(label)
 				.attr('font-size','15')
 
 			const xAxis = d3.axisBottom(xScale);
