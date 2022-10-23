@@ -3,8 +3,8 @@
     import Histogram from "$lib/Histogram.svelte";
 	import HistoScatter from "$lib/HistoScatter.svelte";
     export let data;
-    console.log(data.chartData[0].data)
-	console.log(data.chartData[1].data)
+    //console.log(data.chartData[0].data)
+	//console.log(data.chartData[1].data)
 </script>
 
 <h1 class="tc blue pa2">Welcome to the Repo</h1>
