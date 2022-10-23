@@ -6,6 +6,7 @@
   <!-- svelte-ignore a11y-missing-attribute -->
   <a class="btn btn-ghost normal-case text-xl" href="/">Home</a>
   <a class="btn btn-ghost normal-case text-xl" href="/sample">Samples</a>
+  <a class="btn btn-ghost normal-case text-xl" href="/getData">Get Data</a>
 </div>
 
 
