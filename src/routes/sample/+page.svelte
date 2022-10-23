@@ -1,13 +1,18 @@
 <script>
   import ScatterChart from "$lib/ScatterChart.svelte";
   import Histogram from "$lib/Histogram.svelte";
-	import HistoScatter from "$lib/HistoScatter.svelte";
+  import HistoScatter from "$lib/HistoScatter.svelte";
+  import BarPlot from "$lib/BarPlot.svelte";	
+	
   export let data;
     //console.log(data.chartData[0].data)
 	let pyData = data.pypiData.rows
   let filterPyData = pyData.filter(d => d['download_count'] < 200000)
   var csvPyData = data.csvData.data  
   // console.log(csvPyData,'entryData')
+  var athleteData = data.csvData.data1.slice(0,20)
+  console.log(athleteData,'AthleteData')																	 
+													
 </script>
 
 <h1 class="text-5xl font-bold text-center">Testing gallery</h1>
@@ -34,11 +39,23 @@
 <div class="flex w-full">
   <div class="grid flex-grow card bg-base-300 rounded-box place-items-center">
 	<Histogram width={400} height={300} chartData={filterPyData} Var={'download_count'} Bins={10} color={data.color} label={'Histogram of Download Counts'}  class="max-w-sm rounded-lg shadow-2xl"/>	
-	<h1 class="text-2xl font-bold">Histogram of BSE Dataset</h1>
+	<h1 class="text-2xl font-bold">Pypi Library downloads</h1>
   </div>
   <div class="divider divider-horizontal">|</div>
   <div class="grid flex-grow card bg-base-300 rounded-box place-items-center">
     <Histogram width={400} height={300} chartData={csvPyData} Var={'Sepal_Length'} Bins={10} color={data.color} label={'Histogram of Sepal Length'}  class="max-w-sm rounded-lg shadow-2xl"/>	
+    <h1 class="text-2xl font-bold">Histogram of Iris Dataset</h1>
+  </div>
+</div>
+<div class="divider divider-vertical">|</div>
+<div class="flex w-full">
+  <div class="grid flex-grow card bg-base-300 rounded-box place-items-center">
+	<BarPlot width={400} height={300} chartData={athleteData} xVar={"name"} yVar={"weight"} color={"blue"} label={""} class="max-w-sm rounded-lg shadow-2xl"/>	
+	<h1 class="text-2xl font-bold">Athlete Data Bar Chart</h1>
+  </div>
+  <div class="divider divider-horizontal">|</div>
+  <div class="grid flex-grow card bg-base-300 rounded-box place-items-center">
+    
     <h1 class="text-2xl font-bold">Histogram of Iris Dataset</h1>
   </div>
 </div>
