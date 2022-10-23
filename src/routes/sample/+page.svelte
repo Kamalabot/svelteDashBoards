@@ -7,7 +7,7 @@
 	let pyData = data.pypiData.rows
   let filterPyData = pyData.filter(d => d['download_count'] < 200000)
   var csvPyData = data.csvData.data  
-  console.log(csvPyData,'entryData')
+  // console.log(csvPyData,'entryData')
 </script>
 
 <h1 class="text-5xl font-bold text-center">Testing gallery</h1>
