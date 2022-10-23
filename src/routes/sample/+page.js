@@ -21,11 +21,18 @@ export const load = async ({fetch})=>{
         const pkgDownload = await res.json()
         return pkgDownload
     }
+
+    const csvData = async() =>{
+        const res = await fetch('/iris.csv')
+        console.log(res.body)
+        return res
+    }
     
     return {
         chartData: fetchData(),
         irisData: irisData(),
         pypiData: pyPiDownloads(), 
+        csvData: csvData(),
         color:'green',
         title:'Covid Status in US',
         xVar:'x',

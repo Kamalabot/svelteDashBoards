@@ -1,12 +1,19 @@
 <script>
-    import ScatterChart from "$lib/ScatterChart.svelte";
-    import Histogram from "$lib/Histogram.svelte";
+  import ScatterChart from "$lib/ScatterChart.svelte";
+  import Histogram from "$lib/Histogram.svelte";
 	import HistoScatter from "$lib/HistoScatter.svelte";
-    export let data;
+  export let data;
     //console.log(data.chartData[0].data)
 	let pyData = data.pypiData.rows
   let filterPyData = pyData.filter(d => d['download_count'] < 200000)
-  console.log(filterPyData)
+  
+  import {csv} from "d3"
+
+  csv('https://raw.githubusercontent.com/Kamalabot/M3nD3/main/ObservableData/iris.csv').then((parseData)=>{
+    console.log(parseData)
+  })
+  
+  // console.log(filterPyData)
 </script>
 
 <h1 class="text-5xl font-bold text-center">Testing gallery</h1>
