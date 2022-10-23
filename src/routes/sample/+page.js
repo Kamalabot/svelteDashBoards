@@ -1,6 +1,7 @@
 /** @type {import('./$types').PageLoad} */
 import parsers from "$lib/parsers"
 import { csv } from "d3"
+
 export const load = async ({fetch})=>{
     
     const fetchData = async() =>{
@@ -23,9 +24,9 @@ export const load = async ({fetch})=>{
     }
 
     const csvData = async() =>{
-        const res = await fetch('/iris.csv')
-        console.log(res.body)
-        return res
+        const res = await fetch('/serveCSV')
+        const csvServed = await res.json()
+        return csvServed
     }
     
     return {
