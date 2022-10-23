@@ -6,22 +6,41 @@
     // console.log('outside', recdData)
 
     export let data;
+	let length;
+	let firstElement;
+	
     // export let form;
-    let trialData = data.recvngData[0]
-    console.log(trialData)
+    let trialData = data?.recvngData ?? [2,7,5,6,2,12,5,10,76,52,80,79,8,21,54,68,7]
+    //console.log(trialData)
+	if (trialData !== undefined){
+		length = trialData.length
+		firstElement = JSON.stringify(trialData[0])
+	}
+	console.log(length, firstElement)
 </script>
-<div class="w-full">
-  <form
+
+ <form
     method="POST"
     action="?/getData"
     class="w-full flex flex-col">
-    <input type="text" name="linkName" placeholder="Enter full url">
-    <button class="mt-4 btn btn-primary w-full max-w-xs">Import</button>
-  </form>
+	<div class="form-control">
+	  <label class="label">
+		<span class="label-text">Data Input</span>
+	  </label>
+	  <label class="input-group">
+		<input type="text" placeholder="Enter full URL of CSV file" name="linkName" class="input input-bordered" />
+		<span>Data Source</span>
+	  </label>
+    <button class="mt-4 btn btn-primary w-full max-w-xs">Import csv File</button>
+	</div>
+</form>
+
+<h1 class="text-5x1 font-bold text-center">Imported data</h1>
+
+<div class="max-w">
+    <h3 class="text-3x1 font-bold">Details</h3>
+    <p class="py-6"></p>
 </div>
-<div class="flex w-full">
-  <div class="grid flex-grow card bg-base-300 rounded-box place-items-center">
-    <h3 class="text-2xl font-bold">Histogram</h3>
-    <Histogram width={400} height={300} bind:chartData={data.recvngData[0]} Var={'price'} Bins={10} color={'green'} label={'Histogram of Cases'} class="max-w-sm rounded-lg shadow-2xl"/>  
-  </div>
-</div>
+
+
+	

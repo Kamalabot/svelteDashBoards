@@ -13,8 +13,9 @@ export const actions = {
     getData: async({request})=> {
       const urlData = await request.formData()
       const link = urlData.get('linkName')
-      // console.log(link,'formLink')
+      //console.log(link,'formLink')
       let tempData = await csv(link);
+	  recvngData = [];
       recvngData.push(tempData)
     return{
       type:'Success'

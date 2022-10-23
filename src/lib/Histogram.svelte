@@ -11,6 +11,7 @@
     export let chartData; //get the historic data from page.js
 	let div;
 	//console.log(width, height, chartData,Var,Bins,color,label)
+	
 	buildChart(width, height, chartData,Var,Bins,color,label)
 
 	function buildChart(width, height, data,Var, Bins,colorData, label){
@@ -22,7 +23,9 @@
 		//Histobins is the function that splits the data into each bin
 		
 		const histoBins = d3.bin().thresholds(Bins)
+	
 		const histoData = histoBins(data.map(d => Number(d[Var])))
+	
 		const maxBins = d3.max(histoData, d => d.length)
 
 		const yScale = d3.scaleLinear()
