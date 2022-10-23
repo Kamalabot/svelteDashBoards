@@ -1,4 +1,4 @@
-import { csv } from "d3"
+import { csv, descending } from "d3"
 
 export const GET = async ({request, url}) =>{
     const res = await csv('https://raw.githubusercontent.com/Kamalabot/M3nD3/main/ObservableData/iris.csv')
@@ -10,5 +10,6 @@ export const GET = async ({request, url}) =>{
 		sex: d.sex,
 		sport:d.sport
 	}))
+	.sort((a,b) => descending(a.weight, b.weight))
     return new Response(JSON.stringify({message:'Recd Data', data:res, data1:athleteRes}),{status:200})
 }

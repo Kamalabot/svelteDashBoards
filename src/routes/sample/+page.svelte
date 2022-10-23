@@ -3,15 +3,17 @@
   import Histogram from "$lib/Histogram.svelte";
   import HistoScatter from "$lib/HistoScatter.svelte";
   import BarPlot from "$lib/BarPlot.svelte";	
+  import LineChart from "$lib/LineChart.svelte";
 	
   export let data;
     //console.log(data.chartData[0].data)
-	let pyData = data.pypiData.rows
+  
+  let pyData = data.pypiData.rows
   let filterPyData = pyData.filter(d => d['download_count'] < 200000)
   var csvPyData = data.csvData.data  
   // console.log(csvPyData,'entryData')
   var athleteData = data.csvData.data1.slice(0,20)
-  console.log(athleteData,'AthleteData')																	 
+  // console.log(athleteData,'AthleteData')																	 
 													
 </script>
 
@@ -55,7 +57,7 @@
   </div>
   <div class="divider divider-horizontal">|</div>
   <div class="grid flex-grow card bg-base-300 rounded-box place-items-center">
-    
-    <h1 class="text-2xl font-bold">Histogram of Iris Dataset</h1>
+    <LineChart width={400} height={300} chartData={athleteData} xVar={"name"} yVar={"weight"} color={"blue"} label={""} class="max-w-sm rounded-lg shadow-2xl"/>
+    <h1 class="text-2xl font-bold">Athlete Weight Line</h1>
   </div>
 </div>
