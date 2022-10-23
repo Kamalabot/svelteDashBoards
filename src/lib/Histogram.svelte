@@ -22,7 +22,7 @@
 		//Histobins is the function that splits the data into each bin
 		
 		const histoBins = d3.bin().thresholds(Bins)
-		const histoData = histoBins(data.map(d => d[Var]))
+		const histoData = histoBins(data.map(d => Number(d[Var])))
 		const maxBins = d3.max(histoData, d => d.length)
 
 		const yScale = d3.scaleLinear()
@@ -30,7 +30,7 @@
 			.range([visHeight,margin.top])
 
 		const xScale = d3.scaleLinear()
-			.domain(d3.extent(data, d => d[Var]))
+			.domain(d3.extent(data, d => Number(d[Var])))
 			.range([30,width-margin.left])
 
 		const freq = d3.scaleLinear()
