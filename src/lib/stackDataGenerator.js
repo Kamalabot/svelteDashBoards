@@ -19,7 +19,7 @@ function stackedDataGen(chartData,stackVar,yVar,xVar){
 	  }));
 	
 	const stackData = d3.stack().keys(stackVarArray)(dataByXvar)
-	console.log(stackData)
+	//console.log(stackData)
 	return stackData
 }
 
