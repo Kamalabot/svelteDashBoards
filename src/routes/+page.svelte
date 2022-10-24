@@ -7,7 +7,7 @@
 	//console.log(data.chartData[1].data)
 </script>
 
-<h1 class="text-5x1 font-bold text-center">Welcome to the Repo</h1>
+<h1 data-theme="cmyk" class="text-5x1 font-bold text-center">Welcome to the Repo</h1>
 
 <div class="max-w">
     <h3 class="text-3x1 font-bold">The Challenge</h3>
@@ -17,7 +17,7 @@
         </p>
 </div>
 <div class="flex w-full">
-	<div class="grid flex-grow card bg-base-300 rounded-box place-items-center">
+	<div class="grid flex-grow card bg-accent rounded-box place-items-center">
 	<h3 class="text-2xl font-bold">ScatterPlot Chart</h3>
 	<ScatterChart width={400} height={300} chartData={data.chartData[0].data} xVar={data.xVar} yVar={data.yVar} color={data.color} label={data.title} class="max-w-sm rounded-lg shadow-2xl"/>
 	</div>
