@@ -14,10 +14,15 @@
 	stackedBarPlot(width, height, stackedData,stackVar,xVar, label)
 
 	function stackedBarPlot(width, height,stackedData, stackVar, xVar, label) {
+	  console.log(stackedData)	
+	  const xArray = stackedData.map(d => d.data[xVar])
 	
-	  const xArray = stackedData.map(d => d[xVar])
+	  const maxYVal = d3.max(stackedData.map(d => d.data['total']))
 	
-	  const maxYVal = d3.max(stackedData.map(d => d['total']))
+	  console.log(xArray, maxYVal)
+	  const color = d3.scaleOrdinal()
+    		.domain(stackedData.map(d => d.key))
+    		.range(d3.schemeTableau10);
 		
 	  const margin = {top: 30, right: 0, bottom: 20, left: 40};
 	  const visWidth = width - margin.left - margin.right;
@@ -52,24 +57,16 @@
 
 		  const yAxis = d3.axisLeft(y).tickFormat(d3.format(''))
 
-		  g.append('g')
+		  canvas.append('g')
 			  .attr('transform', `translate(0,${visHeight})`)
 			  .call(xAxis)
 			  .call(g => g.select('.domain').remove());
 
-		  g.append("g")
+		  canvas.append("g")
 			  .call(yAxis)
 			  .call(g => g.select('.domain').remove())
-			.append('text')
-			  .attr('fill', 'black')
-			  .attr('text-anchor', 'start')
-			  .attr('dominant-baseline', 'hanging')
-			  .attr('font-weight', 'bold')
-			  .attr('y', -margin.top + 5)
-			  .attr('x', -margin.left)
-			  .text(yLabel);
 
-		  const series = g.append('g')
+		  const series = chart.append('g')
 			.selectAll('g')
 			.data(stackedData)
 			.join('g')

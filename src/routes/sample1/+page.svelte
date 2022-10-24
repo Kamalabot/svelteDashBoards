@@ -2,7 +2,6 @@
   import PackChart from "$lib/PackChart.svelte";
   import TreemapChart from "$lib/TreemapChart.svelte";
   import stackedDataGenerator from "$lib/stackDataGenerator.js";
-  import StackedBarChart from "$lib/StackedBarChart.svelte";
 	
   import {rollups, timeParse} from "d3"
   export let data;
@@ -23,11 +22,12 @@
   let dataset = nycDataset.map(crash => ({
     date: timeParse('%m/%d/%Y')(crash.date),
     borough: crash.borough,
-    injured: +crash.injured,
+    injured: Number(crash.injured),
 	})).filter(d => d.borough !== '' && d.injured >= 1)
 	
-  console.log(dataset[0])
   const stackedData = stackedDataGenerator.stackedDataGen(dataset,'borough','injured','date') 	
+	
+  console.log(stackedData[0])
 </script>
 
 <h1 class="text-5xl font-bold text-center">Gallery 2</h1>
@@ -61,7 +61,6 @@
 <div class="divider divider-vertical">--</div>
 <div class="flex w-full">
   <div class="grid flex-grow card bg-base-300 rounded-box place-items-center">
-    <StackedBarChart width={700} height={500} stackedData={stackedData} stackVar={'borough'} xVar={'date'} label={"Company Income"} class="max-w-sm rounded-lg shadow-2xl"/>	
-	 <h1 class="text-2xl font-bold">Stacked Bar Chart of NYC Collisions</h1>
+	 <h1 class="text-2xl font-bold">HeatMap Chart of NYC Collisions</h1>
   </div>
 </div>
