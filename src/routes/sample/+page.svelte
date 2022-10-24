@@ -20,13 +20,15 @@
 													
 </script>
 
-<h1 class="text-5xl font-bold text-center">Gallery 1</h1>
+<h1 class="text-5xl font-bold text-center">Gallery One</h1>
 
 <div class="max-w">
     <h3 class="text-3xl font-bold">Basic Charts</h3>
     <p class="py-6">Scatter plots to Pie charts have become a mainstay in our reports, dashboards and Infographics. Gallery consists of 
 	charts that help in Univariate and Bivariate Analysis of the data that is available with us. With D3 these charts can be extended to 
 	tri-variate analysis by assigning the size, color and position.</p>
+	<p class="py-6">The charts are made with Svelte Components inside which the data and the chart functions are coded. None of that info
+	 will be available to the user. Why? Because SvelteKit compiles the source code and sends it to the user.
 </div>
 
 <div class="flex w-full">
