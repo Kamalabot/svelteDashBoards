@@ -20,13 +20,13 @@
 													
 </script>
 
-<h1 class="text-5xl font-bold text-center">Testing gallery</h1>
+<h1 class="text-5xl font-bold text-center">Gallery 1</h1>
 
 <div class="max-w">
-    <h3 class="text-3xl font-bold">Testing Process</h3>
-    <p class="py-6">The svelte components coded with D3 are tested here. Each type of chart needs the data to be in different 
-	format, and contains different variables. The component specification has to include how the data needs to be provided, and 
-	how the function built-in the component will use it. Both of that will be tested.</p>
+    <h3 class="text-3xl font-bold">Basic Charts</h3>
+    <p class="py-6">Scatter plots to Pie charts have become a mainstay in our reports, dashboards and Infographics. Gallery consists of 
+	charts that help in Univariate and Bivariate Analysis of the data that is available with us. With D3 these charts can be extended to 
+	tri-variate analysis by assigning the size, color and position.</p>
 </div>
 
 <div class="flex w-full">
