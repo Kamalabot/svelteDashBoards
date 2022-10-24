@@ -12,10 +12,10 @@
     export let chartData; //get the historic data from page.js
 	let div;
 
-	packPlot(width, height, chartData,refVar,xVar,yVar, label)
+	treemapPlot(width, height, chartData,refVar,xVar,yVar, label)
 
 
-	function packPlot(width,height,chartData,refVar,xVar,yVar, label){
+	function treemapPlot(width,height,chartData,refVar,xVar,yVar, label){
 		
 		const parameterRollUp = d3.rollups(chartData, g => d3.sum(g, x => x[refVar]), d => d[yVar])
   				.sort((a,b) => d3.descending(a[1],b[1]))
@@ -28,13 +28,15 @@
 	
 		paramColorScale.unknown('lightgreen')
 				
-		const margin = { left: 10, right: 10, top: 10, bottom: 10 };
+		const margin = { left: 100, right: 100, top: 10, bottom: 10 };
 		const visHeight = height - margin.top - margin.bottom;
 		const visWidth = width - margin.right - margin.left;
 	
-		const dataPack = d3.pack()
+		const dataPack = d3.treemap()
   			.size([visWidth,visHeight])
-  			.padding(2)
+  			.paddingOuter(10)
+			.paddingInner(2)
+			.tile(d3.treemapBinary)
 	
 		const hierarchyRoot = d3.hierarchy(dataHierarchy)
 		
@@ -55,7 +57,7 @@
 				.attr('height',height)
 
 		const chart = canvas.append('g')
-			.attr('transform', `translate(${0}, ${margin.top})`);
+			.attr('transform', `translate(${150}, ${margin.top})`);
 			
 		const title = canvas.append('g')
 			.attr('transform',`translate(${0},${margin.top + 20})`)
@@ -65,16 +67,17 @@
 		const bubbles = chart.selectAll('g')
 			.data(hierarchyPack)
 			.join('g')
-			.attr('transform',d=> `translate(${d.x},${d.y})`);
+			.attr('transform',d=> `translate(${d.x0},${d.y0})`);
 	
 		const tip = chart.append('text')
-			.attr('transform','translate(100,50)')
+			.attr('transform','translate(-150,50)')
 			.attr('visibility','hidden')
-			.attr('id','cirDetail')
+			.attr('id','recDetail')
 
 		  bubbles 
-			.append('circle')
-			.attr('r', d => d.r)
+			.append('rect')
+			.attr('width', d => d.x1 - d.x0)
+			.attr('height', d => d.y1 - d.y0)
 			.attr('fill',d => paramColorScale(d.data[0]))
 			.attr('opacity',0.8)
 			.attr('stroke','black')
@@ -82,7 +85,7 @@
 			.on('mouseover',showDetail)
 
 		  function showDetail(event, d) {
-			const text = d3.select('#cirDetail')
+			const text = d3.select('#recDetail')
 			  .attr('visibility','visible')
 			  .text(`${xVar}: ${d.data[0]}
 					 ${refVar}: ${Math.round(d.value)} INR`)
