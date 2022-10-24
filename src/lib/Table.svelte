@@ -1,8 +1,6 @@
 <script>
-  export let fileData;
-
-  let columns = fileData.columns;
-  console.log(columns,'columns')
+  export let fileData
+  console.log(fileData,'start')
 </script>
 
 <style>
@@ -16,23 +14,23 @@
 
 <div class="section">
   <div class="container">
-    <table class="collapse ba br2 b--black-10 pv2 ph3 mt4">
-      <thead>
-        <tr class="striped--near-white">
-          {#each columns as column}
-          <th class="pv2 ph3">{column}</th>
-          {/each}
-        </tr>
-      </thead>
-      <tbody>
-        {#each fileData as line}
-          <tr class="striped--near-white">
-            {#each line as compo}
-            <td class="pv2 ph3">{line[compo]}</td>
-            {/each}
-          </tr>
-        {/each}
-      </tbody>
-    </table>
+	  {#if fileData.length != 0}
+		<table class="collapse ba br2 b--black-10 pv2 ph3 mt4">
+		  <thead>
+			<tr class="striped--near-white">
+			  <th class="pv2 ph3">Row Data</th>
+			</tr>
+		  </thead>
+		  <tbody>
+			{#each fileData as line}
+			  <tr class="striped--near-white">
+				<td class="pv2 ph3">{JSON.stringify(line)}</td>
+			  </tr>
+			{/each}
+		  </tbody>
+		</table>
+	  {:else}
+	  <h3>Please enter the URL for fetching the file</h3>
+	  {/if}
   </div>
 </div>

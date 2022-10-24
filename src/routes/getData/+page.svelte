@@ -3,20 +3,9 @@
     import ScatterChart from "$lib/ScatterChart.svelte"
     import Table from "$lib/Table.svelte";
 
-    // console.log('outside', recdData)
-
     export let data;
-	let length;
-	let firstElement;
-	
-    // export let form;
-    let trialData = data?.recvngData ?? [2,7,5,6,2,12,5,10,76,52,80,79,8,21,54,68,7]
-    //console.log(trialData)
-	if (trialData !== undefined){
-		length = trialData.length
-		firstElement = JSON.stringify(trialData[0])
-	}
-	console.log(length, firstElement)
+	console.log(data.recvngData)
+	//console.log(length, firstElement)
 </script>
 
  <form
@@ -37,10 +26,6 @@
 
 <h1 class="text-5x1 font-bold text-center">Imported data</h1>
 
-<div class="max-w">
-    <h3 class="text-3x1 font-bold">Details</h3>
-    <p class="py-6"></p>
-</div>
 
-
+<Table fileData={data.recvngData}/>
 	
