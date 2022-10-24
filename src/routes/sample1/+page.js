@@ -29,12 +29,20 @@ export const load = async ({fetch})=>{
 //		console.log(csvServed.data[0], csvServed.data1[0])
         return csvServed
     }
+	
+	 const complexData = async() =>{
+        const res = await fetch('/serveComplex')
+        const csvSimple = await res.json()
+//		console.log(csvServed.data[0], csvServed.data1[0])
+        return csvSimple
+    }
     
     return {
         chartData: fetchData(),
         irisData: irisData(),
         pypiData: pyPiDownloads(), 
         csvData: csvData(),
+		complexData: complexData(),
         color:'green',
         title:'Covid Status in US',
         xVar:'x',

@@ -15,7 +15,9 @@
 		Industry:d['Industry'],
 		Net_Profit:Number(d['Net Profit  Loss  from Ordinary Activities after Tax'])
 	  }))
-  console.log(companyFilteredByIncome[0])
+	
+  let nycDataset = data.complexData.data;
+  console.log(nycDataset[0])
 </script>
 
 <h1 class="text-5xl font-bold text-center">Gallery 2</h1>
@@ -39,7 +41,7 @@
 	 <h1 class="text-2xl font-bold">Pack Chart of BSE Listed Companies</h1>
   </div>
 </div>
-<div class="divider divider-vertical">|</div>
+<div class="divider divider-vertical">--</div>
 <div class="flex w-full">
   <div class="grid flex-grow card bg-base-300 rounded-box place-items-center">
     <TreemapChart width={700} height={500} chartData={companyFilteredByIncome} refVar={"Total_Income"} xVar={"Company_Name"} yVar={"Industry"} label={"Company Income"}  class="max-w-sm rounded-lg shadow-2xl"/>	
