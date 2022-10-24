@@ -2,9 +2,9 @@
   import PackChart from "$lib/PackChart.svelte";
   import TreemapChart from "$lib/TreemapChart.svelte";
   import stackedDataGenerator from "$lib/stackDataGenerator.js";
-  import HeatMapChart from "$lib/HeatMapChart.js";
+  import HeatMapChart from "$lib/HeatMapChart.svelte";
 	
-  import {rollups, timeParse} from "d3"
+  import {rollups, timeParse, extent} from "d3"
   export let data;
     //console.log(data.chartData[0].data)
   
@@ -17,16 +17,10 @@
 		Industry:d['Industry'],
 		Net_Profit:Number(d['Net Profit  Loss  from Ordinary Activities after Tax'])
 	  }))
-	
-  let nycDataset = data.complexData.data;
-	
-  let dataset = nycDataset.map(crash => ({
-    date: timeParse('%m/%d/%Y')(crash.date),
-    borough: crash.borough,
-    injured: Number(crash.injured),
-	})).filter(d => d.borough !== '' && d.injured >= 1)
-	
-  console.log(d3.extent(dataset, d => d.date))	
+  let companyByIncome = data.csvData.data4[0]
+  console.log(companyByIncome)
+  let companies = data.csvData.data4[1]
+  let qtrs = data.csvData.data4[2]
   
 </script>
 
@@ -61,6 +55,7 @@
 <div class="divider divider-vertical">--</div>
 <div class="flex w-full">
   <div class="grid flex-grow card bg-base-300 rounded-box place-items-center">
+	  <HeatMapChart width={1000} chartData={companyByIncome} xArray={qtrs} yArray={companies} variable={"TotalIncome"} xVar={"qtr"} yVar={"Company_Name"} label={"Income Heat Map"}  class="max-w-sm rounded-lg shadow-2xl"/>
 	 <h1 class="text-2xl font-bold">HeatMap Chart of NYC Collisions</h1>
   </div>
 </div>
