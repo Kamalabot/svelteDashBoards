@@ -1,8 +1,9 @@
 <script>
   import PackChart from "$lib/PackChart.svelte";
   import TreemapChart from "$lib/TreemapChart.svelte";
+  import stackedDataGenerator from "$lib/stackDataGenerator.js";
 	
-  import {rollups} from "d3"
+  import {rollups, timeParse} from "d3"
   export let data;
     //console.log(data.chartData[0].data)
   
@@ -17,7 +18,15 @@
 	  }))
 	
   let nycDataset = data.complexData.data;
-  console.log(nycDataset[0])
+	
+  let dataset = nycDataset.map(crash => ({
+    date: timeParse('%m/%d/%Y')(crash.date),
+    borough: crash.borough,
+    injured: +crash.injured,
+	})).filter(d => d.borough !== '' && d.injured >= 1)
+	
+  console.log(dataset[0])
+  stackedDataGenerator.stackedDataGen(dataset,'borough','injured','date') 	
 </script>
 
 <h1 class="text-5xl font-bold text-center">Gallery 2</h1>

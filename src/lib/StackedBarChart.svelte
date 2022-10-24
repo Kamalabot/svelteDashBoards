@@ -8,12 +8,72 @@
 	export let label;
 	export let xVar;
 	export let yVar;
-	export let refVar
+	export let stackVar
     export let chartData; //get the historic data from page.js
 	let div;
 
-	stackedBarPlot(width, height, chartData,refVar,xVar,yVar, label)
+	stackedBarPlot(width, height, chartData,stackVar,xVar,yVar, label)
 
+	function stackedBarPlot(width, height,chartData, stackVar, xVar, yVar, label) {
+	
+	  const xArray = dataByMonth.map(d => d.month)
+	  const margin = {top: 30, right: 0, bottom: 20, left: 40};
+	  const visWidth = width - margin.left - margin.right;
+	  const visHeight = 500 - margin.top - margin.bottom;
+
+	  const svg = d3.create('svg')
+		  .attr('width', visWidth + margin.left + margin.right)
+		  .attr('height', visHeight + margin.top + margin.bottom);
+
+	  const g = svg.append('g')
+		  .attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+	  const x = d3.scaleBand()
+		  .domain(months)
+		  .range([0, visWidth])
+		  .padding(0.25)
+
+	  const y = d3.scaleLinear()
+		  .domain([0, yMax]).nice()
+		  .range([visHeight, 0]);
+
+	  const xAxis = d3.axisBottom(x).tickFormat(d3.timeFormat('%B'))
+
+	  const yAxis = d3.axisLeft(y).tickFormat(d3.format(yFormat))
+
+	  g.append('g')
+		  .attr('transform', `translate(0,${visHeight})`)
+		  .call(xAxis)
+		  .call(g => g.select('.domain').remove());
+
+	  g.append("g")
+		  .call(yAxis)
+		  .call(g => g.select('.domain').remove())
+		.append('text')
+		  .attr('fill', 'black')
+		  .attr('text-anchor', 'start')
+		  .attr('dominant-baseline', 'hanging')
+		  .attr('font-weight', 'bold')
+		  .attr('y', -margin.top + 5)
+		  .attr('x', -margin.left)
+		  .text(yLabel);
+
+	  const series = g.append('g')
+		.selectAll('g')
+		.data(data)
+		.join('g')
+		  .attr('fill', d => color(d.key));
+
+	  series.selectAll('rect')
+		.data(d => d)
+		.join('rect')
+		  .attr('y', d => y(d[1]))
+		  .attr('height', d => y(d[0]) - y(d[1]))
+		  .attr('x', d => x(d.data.month))
+		  .attr('width', x.bandwidth());
+
+	  return svg.node();
+	}
 
 	function stackedBarPlot(width,height,chartData,refVar,xVar,yVar, label){
 		
