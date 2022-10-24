@@ -85,14 +85,14 @@
 			.attr('class', 'ref')
 			.attr('fill', color)
 			.attr('opacity', 0.7);
-
+/*
 		const valuesRef = bubbles
 			.append('text')
 			.attr('x', d => xScale(d[xVar]) + xScale.bandwidth())
 			.attr('y', d => yScale(d[yVar]))
 			.text(d => d[yVar])
 			.attr('fill', color)
-			.attr('font-size', '15');
+			.attr('font-size', '15');*/
 			})
 	}
 </script>

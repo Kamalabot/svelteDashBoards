@@ -4,7 +4,8 @@
   import HistoScatter from "$lib/HistoScatter.svelte";
   import BarPlot from "$lib/BarPlot.svelte";	
   import LineChart from "$lib/LineChart.svelte";
-	
+  import PieChart from "$lib/PieChart.svelte";
+  import {rollups} from "d3"
   export let data;
     //console.log(data.chartData[0].data)
   
@@ -13,7 +14,9 @@
   var csvPyData = data.csvData.data  
   // console.log(csvPyData,'entryData')
   var athleteData = data.csvData.data1.slice(0,20)
-  // console.log(athleteData,'AthleteData')																	 
+  //console.log(athleteData,'AthleteData')		
+  var athleteCount = rollups(data.csvData.data1, g => g.length, d => d.sport)
+  //console.log(athleteCount)
 													
 </script>
 
@@ -59,5 +62,17 @@
   <div class="grid flex-grow card bg-base-300 rounded-box place-items-center">
     <LineChart width={400} height={300} chartData={athleteData} xVar={"name"} yVar={"weight"} color={"blue"} label={""} class="max-w-sm rounded-lg shadow-2xl"/>
     <h1 class="text-2xl font-bold">Athlete Weight Line</h1>
+  </div>
+</div>
+<div class="divider divider-vertical">|</div>
+<div class="flex w-full">
+  <div class="grid flex-grow card bg-base-300 rounded-box place-items-center">
+	<BarPlot width={400} height={300} chartData={athleteCount} xVar={0} yVar={1} color={"blue"} label={"Athlete Counts"} class="max-w-sm rounded-lg shadow-2xl"/>	
+	<h1 class="text-2xl font-bold">Athlete Counts Bar Chart</h1>
+  </div>
+  <div class="divider divider-horizontal">|</div>
+  <div class="grid flex-grow card bg-base-300 rounded-box place-items-center">
+    <PieChart width={400} height={300} chartData={athleteCount} xVar={0} yVar={1} label={"Athlete Count"} class="max-w-sm rounded-lg shadow-2xl"/>
+    <h1 class="text-2xl font-bold">Athlete Count Pie Chart</h1>
   </div>
 </div>

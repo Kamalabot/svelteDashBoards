@@ -87,7 +87,7 @@
 			.attr('fill','none')
 			.attr('stroke-width',2)
 			.attr('stroke', color)
-
+	/*	
 		const valuesRef = bubbles
 			.append('text')
 			.attr('x', d => xScale(d[xVar]))
@@ -95,7 +95,7 @@
 			.text(d => `${numberFormat(d[yVar])}`)
 			.attr('fill', color)
 			.attr('font-size', '15')
-			.attr('dy', -10);
+			.attr('dy', -10);*/
 	})
 }
 </script>
