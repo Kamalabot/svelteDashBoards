@@ -2,6 +2,7 @@
   import PackChart from "$lib/PackChart.svelte";
   import TreemapChart from "$lib/TreemapChart.svelte";
   import stackedDataGenerator from "$lib/stackDataGenerator.js";
+  import HeatMapChart from "$lib/HeatMapChart.js";
 	
   import {rollups, timeParse} from "d3"
   export let data;
@@ -25,9 +26,8 @@
     injured: Number(crash.injured),
 	})).filter(d => d.borough !== '' && d.injured >= 1)
 	
-  const stackedData = stackedDataGenerator.stackedDataGen(dataset,'borough','injured','date') 	
-	
-  console.log(stackedData[0])
+  console.log(d3.extent(dataset, d => d.date))	
+  
 </script>
 
 <h1 class="text-5xl font-bold text-center">Gallery 2</h1>
