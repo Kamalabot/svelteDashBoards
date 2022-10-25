@@ -67,6 +67,24 @@
   <header class="bg-white">
     <div class="flex mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8 gap-8">
       <h1 class="text-3xl font-bold tracking-tight text-gray-900">Sale Performance Dashboard</h1>
+	  	<div>
+		<label class="btn m-1">Stores</label>
+		  <select tabindex="0" class="menu p-2 shadow bg-base-100" bind:value={storeSelected}>
+			<option>{storeList[0]}</option>
+			{#each storeList as store}
+			<option>{store}</option>
+			{/each}
+		  </select>
+		</div>
+		<div>
+		<label class="btn m-1">Sales Execs</label>
+		  <select tabindex="0" class="menu p-2 shadow bg-base-100" bind:value={repSelected}>
+			<option>{repList[0]}</option>
+			{#each repList as executives}
+			<option>{executives}</option>
+			{/each}
+		  </select>
+		</div>
     </div>
   </header>
 </div>
@@ -75,21 +93,21 @@
 	  <div class="card-body">
 		<h2 class="card-title">Sales $ of Freeport</h2>
 		<figure><BarPlotV1 width={250} height={200} chartData={dashboardData} filterVar={'Freeport'} xVar={"month"} yVar={"totalSales"} color={'orange'} label={""} class="bg-primary" /></figure>
-		<p>Monthly Sales Performance</p>
+		<p>Sales Performance of the Store</p>
 	  </div>
 	</div>
 	<div class="flex-auto card w-96 bg-base-100 shadow-xl">
 	  <div class="card-body">
 		<h2 class="card-title">Gross Margin</h2>
 		<figure><BarPlotV1 width={250} height={200} chartData={dashboardData} filterVar={'Freeport'} xVar={"month"} yVar={"grossProfit"} color={'orange'} label={""} class="bg-primary" /></figure>
-		<p>Monthly Gross Margin Performance</p>
+		<p>Margin Performance of the Store</p>
 	  </div>
 	</div>
 	<div class="flex-auto card w-96 bg-base-100 shadow-xl">
 	  <div class="card-body">
 		<h2 class="card-title">Cost $</h2>
 		<figure><BarPlotV1 width={250} height={200} chartData={dashboardData} filterVar={'Freeport'} xVar={"month"} yVar={"cogs"} color={'orange'} label={""} class="bg-primary" /></figure>
-		<p>Monthly Cost of Goods Sold</p>
+		<p>Cost of Goods Sold</p>
 	  </div>
 	</div>
 </div>
