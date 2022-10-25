@@ -5,7 +5,6 @@
 
     export let data;
 	console.log(data.recvngData)
-	//console.log(length, firstElement)
 </script>
 <div class="flex">
  <form
@@ -26,7 +25,7 @@
 
  <form
     method="POST"
-    action="?/getImg"
+    action="?/scrapeText"
     class="w-full flex flex-col">
 	<div class="form-control">
 	  <label class="label">
@@ -34,9 +33,9 @@
 	  </label>
 	  <label class="input-group">
 		<input type="text" placeholder="Enter full URL of CSV file" name="linkName" class="input input-bordered" />
-		<span>Image Source</span>
+		<span>Site Source</span>
 	  </label>
-    <button class="mt-4 btn btn-primary w-full max-w-xs">Download Image file</button>
+    <button class="mt-4 btn btn-primary w-full max-w-xs">Download Text Source</button>
 	</div>
 </form>
 </div>

@@ -1,6 +1,6 @@
 <script>
   export let fileData
-  console.log(fileData,'start')
+//  console.log(fileData,'start')
 </script>
 
 <style>
