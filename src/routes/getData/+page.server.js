@@ -1,5 +1,7 @@
 import {csv, text} from "d3"
 import * as cheerio from "cheerio"
+import * as fs from "fs"
+
 var recvngData = [];
 
 //The idea of this load() is the page by default executes this function. 
@@ -23,11 +25,16 @@ export const actions = {
     
   },
  
-  getText: async({request})=>{
+  getImg: async({request})=>{
 	  const urlData = await request.formData();
 	  const siteLink = urlData.get('linkName');
-	  const response = await text(siteLink);
-	  console.log(response);
+	  const response = await request(siteLink)
+	  const picBlob = await response.body
+	  console.log(picBlob)
+	  var data = picBlob.replace(/^data:image\/\w+;base64,/, "");
+	  var buf = Buffer.from(data, 'base64');
+      fs.writeFileSync('$static/myFile.png',buf)
+	  recvngData.push('Writing to file')
 	  return{
 		  type:'Success'
 	  }
