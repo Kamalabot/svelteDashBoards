@@ -7,7 +7,7 @@
 	console.log(data.recvngData)
 	//console.log(length, firstElement)
 </script>
-
+<div class="flex">
  <form
     method="POST"
     action="?/getData"
@@ -24,6 +24,22 @@
 	</div>
 </form>
 
+ <form
+    method="POST"
+    action="?/getImg"
+    class="w-full flex flex-col">
+	<div class="form-control">
+	  <label class="label">
+		<span class="label-text">Image Data</span>
+	  </label>
+	  <label class="input-group">
+		<input type="text" placeholder="Enter full URL of CSV file" name="linkName" class="input input-bordered" />
+		<span>Image Source</span>
+	  </label>
+    <button class="mt-4 btn btn-primary w-full max-w-xs">Download Image file</button>
+	</div>
+</form>
+</div>
 <h1 class="text-5x1 font-bold text-center">Imported data</h1>
 
 

@@ -21,5 +21,19 @@ export const actions = {
       type:'Success'
     } 
     
-  }
+  },
+ 
+  getImg: async({request})=>{
+	  const urlData = await request.formData();
+	  const imgLink = urlData.get('linkName');
+	  try{
+	  	let tempData = await fetch(link);
+	  }
+	  catch(e){
+		  console.log('fetch error')
+	  }
+	  return{
+		  type:'Success'
+	  }
+	}
 }
