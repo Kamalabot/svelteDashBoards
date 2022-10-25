@@ -1,6 +1,6 @@
 <script>
 	import * as d3 from "d3"
-	import BarPlotV1 from "$lib/BarPlotV1.svelte"
+	import BarPlotV0 from "$lib/BarPlotV0.svelte"
 	import TableV1 from "$lib/TableV1.svelte"
 	import GroupbarPlot from "$lib/GroupbarPlot.svelte"
 	
@@ -8,36 +8,26 @@
     	let sum = d3.sum(dataset.filter(d =>d[filterOn]==filterVar), d => d[series])
     	return sum
 	}
+	
+	function sumSeriesWoF(dataset, series){
+    	let sum = d3.sum(dataset, d => d[series])
+    	return sum
+	}
 	export let data;
-	const dashboardData = data.csvData.salesData
-	let storeSelected;
-	let repSelected;	
+	
+	const reps = data.csvData.reps
+	const repsData = data.csvData.repsData
 	
 	//group data
-	var storeList= d3.rollups(dashboardData,v => v.length,d => d.stores).map(d => d[0]);
-    var repList = d3.rollups(dashboardData,v => v.length,d => d.reps).map(d => d[0]);
-    var dayList = d3.rollups(dashboardData,v => v.length,d => d.weekDays).map(d => d[0]);
+    var dayList = d3.rollups(repsData,v => v.length,d => d.weekDays).map(d => d[0]);
 	
-	//summing data
 	
-	var storePerformance = storeList.map(d =>({
-		store: d,
-		saleUnits: sumSeries(dashboardData, 'qty',d,'stores'),
-		UPT: sumSeries(dashboardData, 'qty',d,'stores') / dashboardData.filter(f =>f['stores']== d).length,
-		sales:sumSeries(dashboardData, 'totalSales',d,'stores'),
-		cost:sumSeries(dashboardData, 'cost',d,'stores'),
-		costPerUnit: sumSeries(dashboardData, 'cost',d,'stores')/ dashboardData.filter(f =>f['stores']== d).length,
-		repsInStore: d3.rollups(dashboardData.filter(f =>f['stores']== d),v => v.length,d => d.reps).map(d => d[0])
-	}))
-	//console.log(storePerformance)
+	let saleUnits = sumSeries(repsData, 'qty',) 
+	let UPT = saleUnits / repsData.length
+	let sales = sumSeries(repsData, 'totalSales')
+	let cost = sumSeries(repsData, 'cost') / repsData.length
 	
-	let saleUnits = sumSeries(dashboardData, 'qty','Freeport','stores') 
-	let UPT = saleUnits / dashboardData.filter(d =>d['stores']=='Freeport').length
-	let sales = sumSeries(dashboardData, 'totalSales','Freeport','stores')
-	let cost = sumSeries(dashboardData, 'cost','Freeport','stores') / dashboardData.filter(d =>d['stores']=='Freeport').length
-	//console.log(saleUnits, UPT, sales,cost)
-	
-	var pdtListStore = d3.rollups(dashboardData.filter(d =>d['stores']=='Freeport'),v => v.length,d => d.product).map(d => d[0])
+	var pdtListStore = d3.rollups(repsData,v => v.length,d => d.product).map(d => d[0])
 	
 	function shortenName(name){
 		let nameLen = name.split(' ').length;
@@ -54,8 +44,8 @@
 	
 	var pdtPerformance = pdtListStore.map(c =>({
 				product:shortenName(c),
-	 			sales: sumSeries(dashboardData.filter(d =>d['stores']=='Freeport'),'totalSales',c,'product'),
-				cost: sumSeries(dashboardData.filter(d =>d['stores']=='Freeport'),'cost',c,'product')
+	 			sales: sumSeries(repsData,'totalSales',c,'product'),
+				cost: sumSeries(repsData,'cost',c,'product')
 			})).sort((a,b) => d3.descending(a.sales, b.sales)).slice(0,10)
 	console.log(pdtPerformance)
 	
@@ -66,29 +56,30 @@
 <div>
   <header class="bg-white">
     <div class="flex mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8 gap-8">
-      <h1 class="text-3xl font-bold tracking-tight text-gray-900">Sale Performance Dashboard</h1>
+      <h1 class="text-3xl font-bold tracking-tight text-gray-900">Sale Performance of {reps}</h1>
+	  <button class="btn m-1"><a href='/performanceDB' alt='Main Dash'>Main Dash</a></button>	
     </div>
   </header>
 </div>
 <div class="flex justify-center gap-4 p-6 h-96">
 	<div class="flex-auto card w-96 bg-base-100 shadow-xl">
 	  <div class="card-body">
-		<h2 class="card-title">Sales $ of Freeport</h2>
-		<figure><BarPlotV1 width={250} height={200} chartData={dashboardData} filterVar={'Freeport'} xVar={"month"} yVar={"totalSales"} color={'orange'} label={""} class="bg-primary" /></figure>
+		<h2 class="card-title">Sales $</h2>
+		<figure><BarPlotV0 width={250} height={200} chartData={repsData} xVar={"month"} yVar={"totalSales"} color={'orange'} label={""} class="bg-primary" /></figure>
 		<p>Monthly Sales Performance</p>
 	  </div>
 	</div>
 	<div class="flex-auto card w-96 bg-base-100 shadow-xl">
 	  <div class="card-body">
 		<h2 class="card-title">Gross Margin</h2>
-		<figure><BarPlotV1 width={250} height={200} chartData={dashboardData} filterVar={'Freeport'} xVar={"month"} yVar={"grossProfit"} color={'orange'} label={""} class="bg-primary" /></figure>
+		<figure><BarPlotV0 width={250} height={200} chartData={repsData} xVar={"month"} yVar={"grossProfit"} color={'orange'} label={""} class="bg-primary" /></figure>
 		<p>Monthly Gross Margin Performance</p>
 	  </div>
 	</div>
 	<div class="flex-auto card w-96 bg-base-100 shadow-xl">
 	  <div class="card-body">
 		<h2 class="card-title">Cost $</h2>
-		<figure><BarPlotV1 width={250} height={200} chartData={dashboardData} filterVar={'Freeport'} xVar={"month"} yVar={"cogs"} color={'orange'} label={""} class="bg-primary" /></figure>
+		<figure><BarPlotV0 width={250} height={200} chartData={repsData} xVar={"month"} yVar={"cogs"} color={'orange'} label={""} class="bg-primary" /></figure>
 		<p>Monthly Cost of Goods Sold</p>
 	  </div>
 	</div>
@@ -97,7 +88,7 @@
 	<div class="flex-auto card w-96 bg-base-100 shadow-xl">
 	  <div class="card-body">
 		<h2 class="card-title">Sales/ Day</h2>
-		<figure><BarPlotV1 width={250} height={200} chartData={dashboardData} filterVar={'Freeport'} xVar={"weekDays"} yVar={"totalSales"} color={'orange'} label={""} class="bg-primary" /></figure>
+		<figure><BarPlotV0 width={250} height={200} chartData={repsData} xVar={"weekDays"} yVar={"totalSales"} color={'orange'} label={""} class="bg-primary" /></figure>
 		<p>Sales Performance of the Store</p>
 	  </div>
 	</div>
@@ -121,16 +112,8 @@
 	<div class="flex-auto card w-96 bg-base-100 shadow-xl">
 	  <div class="card-body">
 		<h2 class="card-title">Units Sold Trend Daily</h2>
-		<figure><BarPlotV1 width={250} height={200} chartData={dashboardData} filterVar={'Freeport'} xVar={"weekDays"} yVar={"qty"} color={'orange'} label={""} class="bg-primary" /></figure>
+		<figure><BarPlotV0 width={250} height={200} chartData={repsData} xVar={"weekDays"} yVar={"qty"} color={'orange'} label={""} class="bg-primary" /></figure>
 		<p>Ads usage of the Store</p>
-	  </div>
-	</div>
-</div>
-<div class="flex justify-center gap-4 p-6 h-96">
-	<div class="flex-auto card w-96 bg-base-100 shadow-xl">
-	  <div class="card-body">
-		<h2 class="card-title">Sales Performance</h2>
-		<figure><TableV1 fileData={storePerformance}/></figure>
 	  </div>
 	</div>
 </div>

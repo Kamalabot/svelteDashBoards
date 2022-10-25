@@ -3,6 +3,7 @@
 	import BarPlotV0 from "$lib/BarPlotV0.svelte"
 	import TableV1 from "$lib/TableV1.svelte"
 	import GroupbarPlot from "$lib/GroupbarPlot.svelte"
+	import Alink from "$lib/Alink.svelte"
 	
 	function sumSeries(dataset, series,filterVar,filterOn){
     	let sum = d3.sum(dataset.filter(d =>d[filterOn]==filterVar), d => d[series])
@@ -15,14 +16,12 @@
 	}
 	export let data;
 	const dashboardData = data.csvData.salesData
-	let storeSelected;
-	let repSelected;	
-	
 	//group data
 	var storeList= d3.rollups(dashboardData,v => v.length,d => d.stores).map(d => d[0]);
     var repList = d3.rollups(dashboardData,v => v.length,d => d.reps).map(d => d[0]);
     var dayList = d3.rollups(dashboardData,v => v.length,d => d.weekDays).map(d => d[0]);
-	
+	console.log(storeList)
+	console.log(repList)
 	//summing data
 	
 	var storePerformance = storeList.map(d =>({
@@ -72,13 +71,28 @@
   <header class="bg-white">
     <div class="flex mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8 gap-8">
       <h1 class="text-3xl font-bold tracking-tight text-gray-900">Sale Performance Dashboard</h1>
-    </div>
+		<div class="dropdown">
+			<label tabindex="0" class="btn m-1">Store List</label>
+			<ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+			{#each storeList as store}
+			  <li><Alink location={'stores'} variable={store}/></li>
+			{/each}
+			</ul>
+		</div>
+		<div class="dropdown">
+			<label tabindex="0" class="btn m-1">Executives</label>
+			<ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+			{#each repList as rep}
+			  <li><Alink location={'reps'} variable={rep}/></li>
+			{/each}
+			</ul>
+    	</div>
   </header>
 </div>
 <div class="flex justify-center gap-4 p-6 h-96">
 	<div class="flex-auto card w-96 bg-base-100 shadow-xl">
 	  <div class="card-body">
-		<h2 class="card-title">Sales $ of Freeport</h2>
+		<h2 class="card-title">Sales $</h2>
 		<figure><BarPlotV0 width={250} height={200} chartData={dashboardData} xVar={"month"} yVar={"totalSales"} color={'orange'} label={""} class="bg-primary" /></figure>
 		<p>Monthly Sales Performance</p>
 	  </div>
