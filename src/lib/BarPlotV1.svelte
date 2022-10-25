@@ -20,10 +20,10 @@
 		})).sort((a,b) => d3.descending(a.value, b.value))
 		return result
 	}
-	console.log(filterVar)
+	//console.log(filterVar)
 	
 	const sumCatData = groupingSum(chartData.filter(d => d.stores == filterVar),xVar, yVar)
-	console.log(sumCatData)
+	//console.log(sumCatData)
 	
 	barPlot(width, height, sumCatData,"category","value",color,label)
 

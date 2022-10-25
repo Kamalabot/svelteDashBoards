@@ -14,6 +14,13 @@
     var repList = d3.rollups(dashboardData,v => v.length,d => d.reps).map(d => d[0]);
     var dayList = d3.rollups(dashboardData,v => v.length,d => d.weekDays).map(d => d[0]);
 	//summing data
+	var storePerformance = storeList.map(d =>({
+		saleUnits: sumSeries(dashboardData, 'qty',d,'stores'),
+		UPT: sumSeries(dashboardData, 'qty',d,'stores') / dashboardData.filter(f =>f['stores']== d).length,
+		sales:sumSeries(dashboardData, 'totalSales',d,'stores'),
+		cost:sumSeries(dashboardData, 'cost',d,'stores'),
+		costPerUnit: sumSeries(dashboardData, 'cost',d,'stores')/ dashboardData.filter(f =>f['stores']== d).length}))
+	console.log(storePerformance)
 	let saleUnits = sumSeries(dashboardData, 'qty','Freeport','stores') 
 	let UPT = saleUnits / dashboardData.filter(d =>d['stores']=='Freeport').length
 	let sales = sumSeries(dashboardData, 'totalSales','Freeport','stores')
@@ -98,8 +105,8 @@
 	</div>
 	<div class="flex-auto card w-96 bg-base-100 shadow-xl">
 	  <div class="card-body">
-		<h2 class="card-title">UPT Trend Weekly</h2>
-		<figure><svg width=250 height=200 class="bg-primary" /></figure>
+		<h2 class="card-title">Units Sold Trend Daily</h2>
+		<figure><BarPlotV1 width={250} height={200} chartData={dashboardData} filterVar={'Freeport'} xVar={"weekDays"} yVar={"qty"} color={'orange'} label={""} class="bg-primary" /></figure>
 		<p>Ads usage of the Store</p>
 	  </div>
 	</div>
