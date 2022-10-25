@@ -2,6 +2,8 @@
 	import * as d3 from "d3"
 	import BarPlotV1 from "$lib/BarPlotV1.svelte"
 	import TableV1 from "$lib/TableV1.svelte"
+	import GroupbarPlot from "$lib/GroupbarPlot.svelte"
+	
 	function sumSeries(dataset, series,filterVar,filterOn){
     	let sum = d3.sum(dataset.filter(d =>d[filterOn]==filterVar), d => d[series])
     	return sum
@@ -37,7 +39,21 @@
 	
 	var pdtListStore = d3.rollups(dashboardData.filter(d =>d['stores']=='Freeport'),v => v.length,d => d.product).map(d => d[0])
 	
+	function shortenName(name){
+		let nameLen = name.split(' ').length;
+		let abbrv = [];
+		if(nameLen > 1){
+			for (let part of name.split(' ')){
+				abbrv.push(part[0])
+			}
+		} else {
+			return name
+		}
+		return abbrv.join('.')
+	}
+	
 	var pdtPerformance = pdtListStore.map(c =>({
+				product:shortenName(c),
 	 			sales: sumSeries(dashboardData.filter(d =>d['stores']=='Freeport'),'totalSales',c,'product'),
 				cost: sumSeries(dashboardData.filter(d =>d['stores']=='Freeport'),'cost',c,'product')
 			})).sort((a,b) => d3.descending(a.sales, b.sales)).slice(0,10)
@@ -137,17 +153,10 @@
 	</div>
 </div>
 <div class="flex justify-center gap-4 p-6 h-96">
-	<div class="flex-auto card w-96 bg-base-100 shadow-xl">
+	<div class="flex-auto card w-64 h-96 bg-base-100 shadow-xl">
 	  <div class="card-body">
-		<h2 class="card-title">Top 5 stores</h2>
-		<figure><svg width=250 height=200 class="bg-primary" /></figure>
-	  </div>
-	</div>
-	<div class="flex-auto card w-96 bg-base-100 shadow-xl">
-	  <div class="card-body">
-		<h2 class="card-title">Sales Reps Board</h2>
-		<figure><svg width=250 height=200 class="bg-primary" /></figure>
-		<p>Table containing Sales, GMargin, ADs$, UPT, Sales/Unit, Traffic, Trend </p>
+		<h2 class="card-title">Sales and Cost of Top 10 products</h2>
+		<figure><GroupbarPlot width={400} height={300} chartData={pdtPerformance} refVar={'product'} aVar={'sales'} bVar={'cost'} /></figure>
 	  </div>
 	</div>
 </div>
