@@ -1,10 +1,39 @@
+<script>
+	import * as d3 from "d3"
+	
+	export let data;
+	const dashboardData = data.csvData.salesData
+	
+	let stores = "Harrison"
+	let storesData = dashboardData.filter(d => d.stores == stores)
+	var storeList= d3.rollups(dashboardData,v => v.length,d => d.stores).map(d => d[0]);
+    var reps = d3.rollups(dashboardData,v => v.length,d => d.reps).map(d => d[0]);
+    var days = d3.rollups(dashboardData,v => v.length,d => d.weekDays).map(d => d[0]);
+	console.log(storeList)
+</script>
 
-  <html class="h-full bg-gray-100">
-  <body class="h-full">
+<html class="h-full bg-gray-100">
+<body class="h-full">
 <div>
   <header class="bg-white">
-    <div class="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
+    <div class="flex mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8 gap-8">
       <h1 class="text-3xl font-bold tracking-tight text-gray-900">Sale Performance Dashboard</h1>
+	  	<div class="dropdown">
+		  <label tabindex="0" class="btn bg-secondary">Stores</label>
+		  <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box">
+			{#each storeList as store}
+			<li><a>{store}</a></li>
+			{/each}
+		  </ul>
+		</div>
+		<div class="dropdown">
+		  <label tabindex="0" class="btn bg-secondary">Sales Executive</label>
+		  <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box">
+			{#each reps as executives}
+			<li><a>{executives}</a></li>
+			{/each}
+		  </ul>
+		</div>
     </div>
   </header>
 </div>
