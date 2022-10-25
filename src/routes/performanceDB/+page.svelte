@@ -1,7 +1,10 @@
 <script>
 	import * as d3 from "d3"
 	import BarPlotV1 from "$lib/BarPlotV1.svelte"
-	
+	function sumSeries(dataset, series,filterVar,filterOn){
+    	let sum = d3.sum(dataset.filter(d =>d[filterOn]==filterVar), d => d[series])
+    	return sum
+	}
 	export let data;
 	const dashboardData = data.csvData.salesData
 	let storeSelected;
@@ -10,8 +13,12 @@
 	var storeList= d3.rollups(dashboardData,v => v.length,d => d.stores).map(d => d[0]);
     var repList = d3.rollups(dashboardData,v => v.length,d => d.reps).map(d => d[0]);
     var dayList = d3.rollups(dashboardData,v => v.length,d => d.weekDays).map(d => d[0]);
-	//filtering data
-	$: stores ='';
+	//summing data
+	let saleUnits = sumSeries(dashboardData, 'qty','Freeport','stores') 
+	let UPT = saleUnits / dashboardData.filter(d =>d['stores']=='Freeport').length
+	let sales = sumSeries(dashboardData, 'totalSales','Freeport','stores')
+	let cost = sumSeries(dashboardData, 'cost','Freeport','stores') / dashboardData.filter(d =>d['stores']=='Freeport').length
+	console.log(saleUnits, UPT, sales,cost)
 </script>	
 
 <html class="h-full bg-gray-100">
@@ -22,7 +29,7 @@
       <h1 class="text-3xl font-bold tracking-tight text-gray-900">Sale Performance Dashboard</h1>
 	  	<div>
 		<label class="btn m-1">Stores</label>
-		  <select tabindex="0" class="menu p-2 shadow bg-base-100" bind:value={storeSelected} on:change="{()=> stores =storeSelected}">
+		  <select tabindex="0" class="menu p-2 shadow bg-base-100" bind:value={storeSelected}>
 			<option>{storeList[0]}</option>
 			{#each storeList as store}
 			<option>{store}</option>
@@ -44,7 +51,7 @@
 <div class="flex justify-center gap-4 p-6 h-96">
 	<div class="flex-auto card w-96 bg-base-100 shadow-xl">
 	  <div class="card-body">
-		<h2 class="card-title">Sales $ of {stores}</h2>
+		<h2 class="card-title">Sales $ of Freeport</h2>
 		<figure><BarPlotV1 width={250} height={200} chartData={dashboardData} filterVar={'Freeport'} xVar={"month"} yVar={"totalSales"} color={'orange'} label={""} class="bg-primary" /></figure>
 		<p>Sales Performance of the Store</p>
 	  </div>
@@ -52,14 +59,14 @@
 	<div class="flex-auto card w-96 bg-base-100 shadow-xl">
 	  <div class="card-body">
 		<h2 class="card-title">Gross Margin%</h2>
-		<figure><svg width=250 height=200 class="bg-primary" /></figure>
+		<figure><BarPlotV1 width={250} height={200} chartData={dashboardData} filterVar={'Freeport'} xVar={"month"} yVar={"grossProfit"} color={'orange'} label={""} class="bg-primary" /></figure>
 		<p>Margin Performance of the Store</p>
 	  </div>
 	</div>
 	<div class="flex-auto card w-96 bg-base-100 shadow-xl">
 	  <div class="card-body">
 		<h2 class="card-title">COGS $</h2>
-		<figure><svg width=250 height=200 class="bg-primary" /></figure>
+		<figure><BarPlotV1 width={250} height={200} chartData={dashboardData} filterVar={'Freeport'} xVar={"month"} yVar={"cogs"} color={'orange'} label={""} class="bg-primary" /></figure>
 		<p>Ads usage of the Store</p>
 	  </div>
 	</div>
@@ -68,25 +75,25 @@
 	<div class="flex-auto card w-96 bg-base-100 shadow-xl">
 	  <div class="card-body">
 		<h2 class="card-title">Sales/ Day</h2>
-		<figure><svg width=250 height=200 class="bg-primary" /></figure>
+		<figure><BarPlotV1 width={250} height={200} chartData={dashboardData} filterVar={'Freeport'} xVar={"weekDays"} yVar={"totalSales"} color={'orange'} label={""} class="bg-primary" /></figure>
 		<p>Sales Performance of the Store</p>
 	  </div>
 	</div>
 	<div class="w-64 bg-base-100 shadow-xl">  
 		  <div class="stat">
 			<div class="stat-title">Unit/Txn</div>
-			<div class="stat-value text-primary">25.6K</div>
-			<div class="stat-desc">What cost?</div>
+			<div class="stat-value text-primary">{UPT.toFixed(1)}</div>
+			<div class="stat-desc">How Many / txn?</div>
 		  </div>
 		  <div class="stat">
 			<div class="stat-title">Sales Units</div>
-			<div class="stat-value text-secondary">2.6M</div>
-			<div class="stat-desc">How Many?</div>
+			<div class="stat-value text-secondary">{saleUnits}</div>
+			<div class="stat-desc">Total Units</div>
 		  </div>
 		  <div class="stat">
-			<div class="stat-title">Traffic / Day</div>
-			<div class="stat-value text-secondary">2.6M</div>
-			<div class="stat-desc">What Number?</div>
+			<div class="stat-title">Cost$ / Txn</div>
+			<div class="stat-value text-secondary">{cost.toFixed(1)}</div>
+			<div class="stat-desc">At cost / Txn?</div>
 		  </div>
 	</div>
 	<div class="flex-auto card w-96 bg-base-100 shadow-xl">

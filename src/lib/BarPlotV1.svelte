@@ -30,7 +30,7 @@
 
 	function barPlot(width, height, chartData,xVar,yVar,color,label){
 
-		const margin = { left: 30, right: 40, top: 10, bottom: 30 };
+		const margin = { left: 40, right: 20, top: 10, bottom: 30 };
 		const visHeight = height - margin.top - margin.bottom;
 		const visWidth = width - margin.right - margin.left;
 
@@ -64,7 +64,10 @@
 
 		const yAxis = canvas.append('g')
 			.attr('transform', `translate(${margin.left},${margin.top})`)
-			.call(d3.axisLeft(yScale))
+			.call(d3.axisLeft(yScale)
+					.tickFormat(function(d){
+							return d3.format('~s')(d)
+								}))
 			.selectAll("text")  
 			.style("text-anchor", "end")
 			.attr("dx", "-.1em")
