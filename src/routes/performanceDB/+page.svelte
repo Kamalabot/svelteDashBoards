@@ -1,6 +1,7 @@
 <script>
 	import * as d3 from "d3"
 	import BarPlotV1 from "$lib/BarPlotV1.svelte"
+	import TableV1 from "$lib/TableV1.svelte"
 	function sumSeries(dataset, series,filterVar,filterOn){
     	let sum = d3.sum(dataset.filter(d =>d[filterOn]==filterVar), d => d[series])
     	return sum
@@ -9,23 +10,39 @@
 	const dashboardData = data.csvData.salesData
 	let storeSelected;
 	let repSelected;	
+	
 	//group data
 	var storeList= d3.rollups(dashboardData,v => v.length,d => d.stores).map(d => d[0]);
     var repList = d3.rollups(dashboardData,v => v.length,d => d.reps).map(d => d[0]);
     var dayList = d3.rollups(dashboardData,v => v.length,d => d.weekDays).map(d => d[0]);
+	
 	//summing data
+	
 	var storePerformance = storeList.map(d =>({
+		store: d,
 		saleUnits: sumSeries(dashboardData, 'qty',d,'stores'),
 		UPT: sumSeries(dashboardData, 'qty',d,'stores') / dashboardData.filter(f =>f['stores']== d).length,
 		sales:sumSeries(dashboardData, 'totalSales',d,'stores'),
 		cost:sumSeries(dashboardData, 'cost',d,'stores'),
-		costPerUnit: sumSeries(dashboardData, 'cost',d,'stores')/ dashboardData.filter(f =>f['stores']== d).length}))
-	console.log(storePerformance)
+		costPerUnit: sumSeries(dashboardData, 'cost',d,'stores')/ dashboardData.filter(f =>f['stores']== d).length,
+		repsInStore: d3.rollups(dashboardData.filter(f =>f['stores']== d),v => v.length,d => d.reps).map(d => d[0])
+	}))
+	//console.log(storePerformance)
+	
 	let saleUnits = sumSeries(dashboardData, 'qty','Freeport','stores') 
 	let UPT = saleUnits / dashboardData.filter(d =>d['stores']=='Freeport').length
 	let sales = sumSeries(dashboardData, 'totalSales','Freeport','stores')
 	let cost = sumSeries(dashboardData, 'cost','Freeport','stores') / dashboardData.filter(d =>d['stores']=='Freeport').length
-	console.log(saleUnits, UPT, sales,cost)
+	//console.log(saleUnits, UPT, sales,cost)
+	
+	var pdtListStore = d3.rollups(dashboardData.filter(d =>d['stores']=='Freeport'),v => v.length,d => d.product).map(d => d[0])
+	
+	var pdtPerformance = pdtListStore.map(c =>({
+	 			sales: sumSeries(dashboardData.filter(d =>d['stores']=='Freeport'),'totalSales',c,'product'),
+				cost: sumSeries(dashboardData.filter(d =>d['stores']=='Freeport'),'cost',c,'product')
+			})).sort((a,b) => d3.descending(a.sales, b.sales)).slice(0,10)
+	console.log(pdtPerformance)
+	
 </script>	
 
 <html class="h-full bg-gray-100">
@@ -65,16 +82,16 @@
 	</div>
 	<div class="flex-auto card w-96 bg-base-100 shadow-xl">
 	  <div class="card-body">
-		<h2 class="card-title">Gross Margin%</h2>
+		<h2 class="card-title">Gross Margin</h2>
 		<figure><BarPlotV1 width={250} height={200} chartData={dashboardData} filterVar={'Freeport'} xVar={"month"} yVar={"grossProfit"} color={'orange'} label={""} class="bg-primary" /></figure>
 		<p>Margin Performance of the Store</p>
 	  </div>
 	</div>
 	<div class="flex-auto card w-96 bg-base-100 shadow-xl">
 	  <div class="card-body">
-		<h2 class="card-title">COGS $</h2>
+		<h2 class="card-title">Cost $</h2>
 		<figure><BarPlotV1 width={250} height={200} chartData={dashboardData} filterVar={'Freeport'} xVar={"month"} yVar={"cogs"} color={'orange'} label={""} class="bg-primary" /></figure>
-		<p>Ads usage of the Store</p>
+		<p>Cost of Goods Sold</p>
 	  </div>
 	</div>
 </div>
@@ -114,14 +131,21 @@
 <div class="flex justify-center gap-4 p-6 h-96">
 	<div class="flex-auto card w-96 bg-base-100 shadow-xl">
 	  <div class="card-body">
+		<h2 class="card-title">Sales Performance</h2>
+		<figure><TableV1 fileData={storePerformance}/></figure>
+	  </div>
+	</div>
+</div>
+<div class="flex justify-center gap-4 p-6 h-96">
+	<div class="flex-auto card w-96 bg-base-100 shadow-xl">
+	  <div class="card-body">
 		<h2 class="card-title">Top 5 stores</h2>
 		<figure><svg width=250 height=200 class="bg-primary" /></figure>
-		<p>Sales Performance of the Store</p>
 	  </div>
 	</div>
 	<div class="flex-auto card w-96 bg-base-100 shadow-xl">
 	  <div class="card-body">
-		<h2 class="card-title">Store Leader Board</h2>
+		<h2 class="card-title">Sales Reps Board</h2>
 		<figure><svg width=250 height=200 class="bg-primary" /></figure>
 		<p>Table containing Sales, GMargin, ADs$, UPT, Sales/Unit, Traffic, Trend </p>
 	  </div>
