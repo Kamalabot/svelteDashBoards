@@ -1,5 +1,6 @@
 <script>
   import "../app.css";
+  export let data;	
 </script>
 
 <div class="navbar bg-primary">
@@ -20,8 +21,14 @@
 	</div>
   <a class="btn btn-ghost normal-case text-xl" href="/getData">Get Data</a>
   	<div class="gap-5 navbar-end">
+	{#if data?.profile}
+		<form action='/logout' method='POST'>
+			<button class="btn btn-outline base-300">Logout</button>	
+		</form>
+	{:else}	
 	<a class="btn btn-outline base-300" href="/Register">Register</a>
   	<a class="btn btn-outline base-300" href="/login">Login</a>
+	{/if}
 	</div>	  
 </div>
 
