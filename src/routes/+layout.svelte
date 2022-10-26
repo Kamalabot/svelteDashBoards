@@ -2,7 +2,7 @@
   import "../app.css";
 </script>
 
-<div class="navbar bg-info">
+<div class="navbar bg-primary">
   <!-- svelte-ignore a11y-missing-attribute -->
   <a class="btn btn-ghost normal-case text-xl" href="/">Home</a>	
 	<div class="dropdown">
@@ -19,6 +19,10 @@
 	  </ul>
 	</div>
   <a class="btn btn-ghost normal-case text-xl" href="/getData">Get Data</a>
+  	<div class="gap-5 navbar-end">
+	<a class="btn btn-outline base-300" href="/Register">Register</a>
+  	<a class="btn btn-outline base-300" href="/login">Login</a>
+	</div>	  
 </div>
 
 
