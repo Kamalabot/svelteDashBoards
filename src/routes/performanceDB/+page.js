@@ -1,5 +1,6 @@
 import parsers from "$lib/parsers"
 import { csv } from "d3"
+import PocketBase from "pocketbase"
 
 export const load = async ({fetch})=>{
 	
@@ -9,7 +10,7 @@ export const load = async ({fetch})=>{
 	//		console.log(csvServed.data[0], csvServed.data1[0])
 			return csvServed
 		}
-
+	
 		return {
 			csvData: csvData(),
 		};
