@@ -1,17 +1,13 @@
-import PocketBase from 'pocketbase';
+import postgres from 'postgres';
 
 export const handle = async ({ event, resolve }) => {
-	event.locals.pb = new PocketBase('http://127.0.0.1:8090');
-	event.locals.pb.authStore.loadFromCookie(event.request.headers.get('cookie') || '');
-
-	if (event.locals.pb.authStore.isValid) {
-		event.locals.user = event.locals.pb.authStore.model;
-	}
-	console.log(event.locals.user)
+	//Connecting to the database in local environment
+	const source = postgres(`postgres://postgres:1234@172.17.0.2:5432/test`);
+	
+	//awaiting the event to resolve
+	event.locals = {
+		sql: source
+		}
 	const response = await resolve(event);
-
-	// TODO: secure before deployment
-	response.headers.set('set-cookie', event.locals.pb.authStore.exportToCookie({ secure: false }));
-	//console.log(response)
 	return response;
 };
