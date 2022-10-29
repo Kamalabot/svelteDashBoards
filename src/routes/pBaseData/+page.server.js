@@ -6,8 +6,9 @@ import {serializeNonPOJOs} from '$lib/helpers'
 export const load = async ({locals}) => {
 	const saleData = await locals.pb.records.getList('salesFullData',1,20)
 	const irisData = await locals.pb.records.getList('irisData',1,20)
-	console.log(saleData)
+	const nycData = await locals.pb.records.getList('nycCollisions',1,20)
+	//console.log(saleData)
 	return{
-		collOne : [serializeNonPOJOs(saleData), serializeNonPOJOs(irisData)]
+		collOne : [serializeNonPOJOs(saleData), serializeNonPOJOs(irisData),serializeNonPOJOs(nycData)]
 	}
 }

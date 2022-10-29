@@ -27,6 +27,7 @@
 		"daisyui": "^2.33.0",
 		"moment": "^2.29.4",
 		"pocketbase": "^0.7.4",
+		"postgres": "^3.3.1",
 		"request": "^2.88.2",
 		"svelte-icons": "^2.1.0",
 		"theme-change": "^2.2.0"

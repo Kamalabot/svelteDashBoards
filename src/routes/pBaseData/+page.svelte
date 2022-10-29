@@ -4,6 +4,6 @@
     import Table from "$lib/Table.svelte";
 
     export let data;
-	console.log(data.collOne[0])
+	console.log(data.collOne[2])
 </script>
 	
